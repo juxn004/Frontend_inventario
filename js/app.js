@@ -1,5 +1,5 @@
 let idEditando = null;
-const API_URL = "http://localhost:8080/productos";
+const API_URL = "https://backendinventario-production-c5ef.up.railway.app/productos";
 
 // Canal para notificar cambios a otras pestañas (dashboard)
 const appChannel = new BroadcastChannel('inventario_updates');

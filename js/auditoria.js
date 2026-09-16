@@ -3,7 +3,7 @@
  * Carga y muestra el historial de auditoría con paginación y filtros
  */
 
-const API_URL = "http://localhost:8080/auditoria";
+const API_URL = "https://backendinventario-production-c5ef.up.railway.app/productos";
 
 let paginaActual = 0;
 let tamanoPagina = 20;

@@ -4,7 +4,7 @@
  * Actualización en tiempo real via BroadcastChannel + Polling
  */
 
-const API_URL = "http://localhost:8080/productos";
+const API_URL = "https://backendinventario-production-c5ef.up.railway.app/productos";
 
 let chartCategoria = null;
 let pollingInterval = null;
