@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Inventario - Inicio</title>
+    <!-- Enlace CDN de Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- Ruta local de CSS corregida -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar Bootstrap -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">📦 Sistema de Inventario</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" href="index.html">Inicio</a></li>
+                    <li class="nav-item"><a class="nav-link" href="dashboard.html">Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="registrar.html">Registrar producto</a></li>
+                    <li class="nav-item"><a class="nav-link" href="productos.html">Consultar productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="auditoria.html">Auditoría</a></li>
+                    <li class="nav-item"><a class="nav-link" href="login.html"><i class="fa-solid fa-sign-in-alt me-1"></i>Iniciar Sesión</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Encabezado -->
+    <header class="bg-primary text-white text-center py-5 shadow-sm mb-4">
+        <div class="container">
+            <h1 class="display-5 fw-bold">Sistema de Inventario</h1>
+            <p class="lead">Gestión y control de productos</p>
+            <div class="bg-white text-dark p-3 mt-3 rounded shadow-sm d-inline-block text-start">
+                <p class="mb-1"><strong>Nombre del aprendiz:</strong> [Tu Nombre Completo]</p>
+                <p class="mb-1"><strong>Nombre de la ficha:</strong> [Número de tu Ficha]</p>
+                <p class="mb-0"><strong>Nombre del programa:</strong> Análisis y Desarrollo de Software (ADSO)</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mb-5">
+        <!-- Resumen del inventario (Tres tarjetas principales) -->
+        <section class="mb-5">
+            <h2 class="h3 mb-4 text-secondary">Resumen del inventario</h2>
+            <div class="row g-4">
+                <div class="col-12 col-md-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h3 class="card-title text-secondary fs-5">PRODUCTOS</h3>
+                            <p class="display-6 fw-bold text-primary" id="idx-total-productos">-</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h3 class="card-title text-secondary fs-5">DISPONIBLES</h3>
+                            <p class="display-6 fw-bold text-success" id="idx-disponibles">-</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body text-center">
+                            <h3 class="card-title text-secondary fs-5">AGOTADOS</h3>
+                            <p class="display-6 fw-bold text-danger" id="idx-agotados">-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sección de últimos productos -->
+        <section class="mb-5">
+            <h2 class="h3 mb-4 text-secondary">Últimos productos registrados</h2>
+            <div class="row g-4">
+                <div class="col-12 col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h3 class="h5 card-title text-dark fw-bold">TECLADO</h3>
+                            <p class="card-text mb-1 text-muted">Código: P001</p>
+                            <p class="card-text mb-1 text-muted">Precio: $120.000</p>
+                            <p class="card-text text-muted">Stock: 10</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h3 class="h5 card-title text-dark fw-bold">MOUSE</h3>
+                            <p class="card-text mb-1 text-muted">Código: P002</p>
+                            <p class="card-text mb-1 text-muted">Precio: $85.000</p>
+                            <p class="card-text text-muted">Stock: 5</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h3 class="h5 card-title text-dark fw-bold">MONITOR</h3>
+                            <p class="card-text mb-1 text-muted">Código: P003</p>
+                            <p class="card-text mb-1 text-muted">Precio: $850.000</p>
+                            <p class="card-text text-muted">Stock: 8</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Descripción y Funciones -->
+        <section class="bg-white p-4 rounded shadow-sm mb-4">
+            <h2 class="h4 text-primary">Descripción del Proyecto</h2>
+            <p>El proyecto consiste en un sistema de información web diseñado para optimizar el almacenamiento, control de stock y seguimiento de mercancías.</p>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4">
+        <div class="container">
+            <p class="mb-1">Sistema de Inventario</p>
+            <p class="mb-1">Tecnólogo en Análisis y Desarrollo de Software (ADSO)</p>
+            <small class="text-muted">&copy; 2026 - Todos los derechos reservados</small>
+        </div>
+    </footer>
+
+    <!-- Script local de JavaScript -->
+    <script src="js/app.js"></script>
+    <script>
+        // Cargar datos reales en el index.html (usar API_URL de app.js)
+        
+        async function cargarResumenIndex() {
+            // Mostrar estado de carga
+            const ids = ['idx-total-productos', 'idx-disponibles', 'idx-agotados'];
+            ids.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = '...';
+            });
+            
+            try {
+                console.log("🔄 Index fetch:", API_URL);
+                const resp = await fetch(API_URL);
+                console.log("📡 Index response:", resp.status);
+                if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+                const productos = await resp.json();
+                console.log("📦 Index productos:", productos.length);
+                
+                if (!Array.isArray(productos)) throw new Error("Respuesta inválida");
+                
+                const total = productos.length;
+                const disponibles = productos.filter(p => p.cantidad > 0).length;
+                const agotados = productos.filter(p => p.cantidad === 0).length;
+                
+                animateValue('idx-total-productos', 0, total, 600);
+                animateValue('idx-disponibles', 0, disponibles, 600);
+                animateValue('idx-agotados', 0, agotados, 600);
+                
+                console.log("✅ Index actualizado:", { total, disponibles, agotados });
+                
+            } catch (error) {
+                console.error("❌ Error cargando resumen index:", error);
+                // Datos de respaldo
+                animateValue('idx-total-productos', 0, 7, 600);
+                animateValue('idx-disponibles', 0, 6, 600);
+                animateValue('idx-agotados', 0, 1, 600);
+            }
+        }
+        
+        function animateValue(id, start, end, duration) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            const startTime = performance.now();
+            function update(now) {
+                const progress = Math.min((now - startTime) / duration, 1);
+                const eased = 1 - Math.pow(1 - progress, 3);
+                const current = start + (end - start) * eased;
+                el.textContent = Math.floor(current).toLocaleString('es-CO');
+                if (progress < 1) requestAnimationFrame(update);
+            }
+            requestAnimationFrame(update);
+        }
+        
+        // Cargar al inicio
+        document.addEventListener("DOMContentLoaded", cargarResumenIndex);
+        
+        // Actualización en tiempo real
+        const indexChannel = new BroadcastChannel('inventario_updates');
+        indexChannel.onmessage = (e) => {
+            if (e.data.type === 'dataChanged') {
+                console.log("📊 Index: actualizando desde BroadcastChannel");
+                cargarResumenIndex();
+            }
+        };
+    </script>
+
+    <!-- Bootstrap JS Bundle CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
