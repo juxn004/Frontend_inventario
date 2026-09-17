@@ -12,20 +12,20 @@ function notificarCambioDatos() {
 document.addEventListener("DOMContentLoaded", function () {
     const formulario = document.getElementById("formProducto");
 
-    // 1. Obtener productos desde la API (GET) en el puerto 8080
+    // 1. Obtener productos desde la API (GET)
     window.obtenerProductos = async function() {
         try {
             const respuesta = await fetch(API_URL);
             if (!respuesta.ok) {
-                throw new Error("Error al conectar con la API en el puerto 8080");
+                throw new Error("Error al conectar con la API");
             }
             return await respuesta.json();
         } catch (error) {
             console.error("No se pudo conectar al backend:", error);
-            // Datos de respaldo por si el servidor no está encendido aún
+            // Datos de respaldo actualizados con el campo "marca"
             return [
-                { codigo: "P001", nombre: "Teclado", categoria: "Tecnología", proveedor: "Tech Colombia", precio: 120000, cantidad: 10, stockMinimo: 3 },
-                { codigo: "P002", nombre: "Mouse", categoria: "Tecnología", proveedor: "LogiTech", precio: 60000, cantidad: 2, stockMinimo: 5 }
+                { codigo: "P001", nombre: "Teclado", marca: "Logitech", categoria: "Tecnología", proveedor: "Tech Colombia", precio: 120000, cantidad: 10, stockMinimo: 3 },
+                { codigo: "P002", nombre: "Mouse", marca: "Razer", categoria: "Tecnología", proveedor: "LogiTech", precio: 60000, cantidad: 2, stockMinimo: 5 }
             ];
         }
     };
@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const tabla = document.getElementById("tablaProductos");
         if (!tabla) return; 
 
-        // Detectar si estamos en registrar.html (tiene formulario)
         const esRegistrar = document.getElementById("formProducto") !== null;
 
         let productos = await window.obtenerProductos();
@@ -56,10 +55,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const valorTotal = Number(producto.precio) * Number(producto.cantidad);
 
+            // IMPORTANTE: El orden de los <td> debe coincidir exactamente con los <th> de tu tabla HTML
             const fila = `
                 <tr>
                     <td>${producto.codigo}</td>
                     <td>${producto.nombre}</td>
+                    <td>${producto.marca || "N/A"}</td> 
                     <td>${producto.categoria || "General"}</td>
                     <td>${producto.proveedor || "N/A"}</td>
                     <td>$${Number(producto.precio).toLocaleString()}</td>
@@ -98,32 +99,34 @@ document.addEventListener("DOMContentLoaded", function () {
 
             const codigo = document.getElementById("codigo").value.trim();
             const nombre = document.getElementById("nombre").value.trim();
+            const marca = document.getElementById("marca").value.trim(); // <-- Capturar marca
             const categoria = document.getElementById("categoria").value.trim();
             const proveedor = document.getElementById("proveedor").value.trim();
             const precio = parseFloat(document.getElementById("precio").value);
             const cantidad = parseInt(document.getElementById("cantidad").value);
             const stockMinimo = parseInt(document.getElementById("stockMinimo").value);
+
             // Validaciones locales
             if (codigo === "") { alert("Debe ingresar el código"); return; }
             if (!nombre) { alert("El nombre es obligatorio."); return; }
+            if (!marca) { alert("La marca es obligatoria."); return; } // <-- Validación opcional
             if (!proveedor) { alert("El proveedor es obligatorio."); return; }
             if (precio <= 0 || isNaN(precio)) { alert("El precio debe ser mayor que cero"); return; }
             if (cantidad < 0 || isNaN(cantidad)) { alert("La cantidad no puede ser negativa"); return; }
             if (isNaN(stockMinimo) || stockMinimo < 0) { alert("El stock mínimo debe ser un número válido"); return; }
 
-            const producto = { codigo, nombre, categoria, proveedor, precio, cantidad, stockMinimo };
+            // Objeto enviado a la API con el campo marca incluido
+            const producto = { codigo, nombre, marca, categoria, proveedor, precio, cantidad, stockMinimo };
             const botonGuardar = document.querySelector("#formProducto button[type='submit']");
 
             try {
                 let url = API_URL;
                 let metodo = "POST";
 
-                // Si estamos editando, ajustamos la ruta y el método
                 if (idEditando !== null) {
                     url = `${API_URL}/${idEditando}`;
                     metodo = "PUT";
                 } else {
-                    // Validar códigos repetidos si es nuevo
                     let productosActuales = await window.obtenerProductos();
                     const existe = productosActuales.some(p => p.codigo === codigo);
                     if (existe) {
@@ -144,7 +147,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     throw new Error("Error al guardar el producto en el servidor");
                 }
 
-                // Reiniciar estado de edición
                 if (idEditando !== null) {
                     idEditando = null;
                     if (botonGuardar) {
@@ -161,24 +163,23 @@ document.addEventListener("DOMContentLoaded", function () {
                     setTimeout(() => { mensajeExito.style.display = "none"; }, 3000);
                 }
 
-                // Notificar a otras pestañas (dashboard) que hay cambios
                 notificarCambioDatos();
 
             } catch (error) {
                 console.error("Error al enviar los datos:", error);
-                alert("No se pudo conectar con el servidor (puerto 8080) para guardar el producto.");
+                alert("No se pudo conectar con el servidor para guardar el producto.");
             }
         });
     }
 });
 
-// 4. Función Eliminar (Global mediante API DELETE)
+// 4. Función Eliminar
 window.eliminarProducto = async function(id) {
     const confirmar = confirm("¿Está seguro de eliminar este producto?");
     if (!confirmar) return;
 
     try {
-        const respuesta = await fetch(`http://localhost:8080/productos/${id}`, {
+        const respuesta = await fetch(`${API_URL}/${id}`, {
             method: "DELETE"
         });
 
@@ -190,16 +191,15 @@ window.eliminarProducto = async function(id) {
             await window.mostrarProductos();
         }
 
-        // Notificar a otras pestañas (dashboard) que hay cambios
         notificarCambioDatos();
 
     } catch (error) {
         console.error("Error:", error);
-        alert("No se pudo eliminar el producto del servidor en el puerto 8080.");
+        alert("No se pudo eliminar el producto del servidor.");
     }
 }
 
-// 5. Función Editar (Global para cargar datos en el formulario)
+// 5. Función Editar (Cargar datos en el formulario)
 window.editarProducto = async function(id) {
     let productos = await window.obtenerProductos();
     const producto = productos.find(function(prod) {
@@ -212,6 +212,7 @@ window.editarProducto = async function(id) {
 
     document.getElementById("codigo").value = producto.codigo;
     document.getElementById("nombre").value = producto.nombre;
+    document.getElementById("marca").value = producto.marca || ""; // <-- Cargar marca en el input
     document.getElementById("categoria").value = producto.categoria;
     document.getElementById("proveedor").value = producto.proveedor || "";
     document.getElementById("precio").value = producto.precio;
@@ -226,9 +227,7 @@ window.editarProducto = async function(id) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// =========================================================================
-// BUSCAR PRODUCTO POR ID (GET /productos/{id})
-// =========================================================================
+// BUSCAR PRODUCTO POR ID
 window.buscarProductoPorId = async function() {
     const inputId = document.getElementById("buscarId");
     const id = inputId.value.trim();
@@ -239,7 +238,6 @@ window.buscarProductoPorId = async function() {
     }
 
     try {
-        // Hace la petición al endpoint con PathVariable de Spring Boot
         const respuesta = await fetch(`${API_URL}/${id}`);
 
         if (!respuesta.ok) {
@@ -251,23 +249,23 @@ window.buscarProductoPorId = async function() {
         const tabla = document.getElementById("tablaProductos");
         if (!tabla) return;
 
-        // Si el endpoint devuelve null o un objeto vacío
         if (!producto || !producto.id) {
             alert(`No se encontró ningún producto con el ID ${id}`);
             return;
         }
 
-        // Renderiza únicamente el producto encontrado en la tabla (misma estructura que la lista principal)
         const estadoHTML = producto.cantidad > 0
             ? `<span class="badge bg-success">Disponible</span>`
             : `<span class="badge bg-danger">Agotado</span>`;
 
         const valorTotal = Number(producto.precio) * Number(producto.cantidad);
 
+        // Renderizado del resultado individual asegurando que la Marca quede en su columna correspondiente
         tabla.innerHTML = `
             <tr>
                 <td class="fw-bold">${producto.codigo}</td>
                 <td>${producto.nombre}</td>
+                <td>${producto.marca || 'N/A'}</td>
                 <td><span class="badge bg-secondary">${producto.categoria || 'N/A'}</span></td>
                 <td>${producto.proveedor || 'N/A'}</td>
                 <td class="text-success fw-bold">$${Number(producto.precio).toLocaleString()}</td>
@@ -285,5 +283,5 @@ window.buscarProductoPorId = async function() {
 window.limpiarBusqueda = function() {
     const inputId = document.getElementById("buscarId");
     if (inputId) inputId.value = "";
-    window.mostrarProductos(); // Vuelve a listar todos los productos de MySQL
+    window.mostrarProductos();
 }
