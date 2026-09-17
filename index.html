@@ -38,12 +38,26 @@
             <h1 class="display-5 fw-bold">Sistema de Inventario</h1>
             <p class="lead">Gestión y control de productos</p>
             <div class="bg-white text-dark p-3 mt-3 rounded shadow-sm d-inline-block text-start">
-                <p class="mb-1"><strong>Nombre del aprendiz:</strong> [Tu Nombre Completo]</p>
-                <p class="mb-1"><strong>Nombre de la ficha:</strong> [Número de tu Ficha]</p>
+                <p class="mb-1"><strong>Nombre del aprendiz:</strong> [Juan de Dios]</p>
+                <p class="mb-1"><strong>Nombre de la ficha:</strong> [3233929]</p>
                 <p class="mb-0"><strong>Nombre del programa:</strong> Análisis y Desarrollo de Software (ADSO)</p>
             </div>
         </div>
     </header>
+
+    <!-- Indicador del Total de Productos -->
+    <div class="row my-4">
+        <div class="col-md-4">
+            <div class="card text-white bg-primary shadow-sm">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Total de Productos</h5>
+                    <!-- Usamos este ID para actualizarlo con JavaScript -->
+                    <p class="card-text fs-2 fw-bold" id="totalProductosIndex">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 
     <main class="container mb-5">
         <!-- Resumen del inventario (Tres tarjetas principales) -->

@@ -357,3 +357,19 @@ window.limpiarBusqueda = function() {
     
     window.mostrarProductos();
 }
+// Mostrar el total de productos en la página principal (index.html)
+document.addEventListener("DOMContentLoaded", async function () {
+    const contenedorTotalIndex = document.getElementById("totalProductosIndex");
+    
+    // Solo se ejecuta si el elemento existe en la página actual (index.html)
+    if (contenedorTotalIndex) {
+        try {
+            const productos = await window.obtenerProductos();
+            // Mostramos la cantidad total de elementos en la lista
+            contenedorTotalIndex.textContent = productos.length;
+        } catch (error) {
+            console.error("Error al obtener el total de productos:", error);
+            contenedorTotalIndex.textContent = "0";
+        }
+    }
+});
